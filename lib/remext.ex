@@ -1,4 +1,5 @@
 defmodule Remext do
+  @moduledoc "Main file"
   @options [
     help: :boolean,
     set: :string,
@@ -46,7 +47,7 @@ defmodule Remext do
   defp execute_path(_, opts, [], _) do
     case opts[:search] do
       true ->
-        IO.puts("List all keys")
+        JsonManager.search(nil) |> Enum.each(fn {x, y} -> IO.puts("#{x}:#{y}") end)
 
       _ ->
         IO.puts("No argument")
@@ -59,28 +60,40 @@ defmodule Remext do
     show_help()
   end
 
-  defp show_help do
-    IO.puts("There is no help right now")
-  end
-
   defp main(key, nil, false, false) do
-    IO.puts("Show value at #{key}")
+    IO.puts(JsonManager.get_value(key))
   end
 
   defp main(key, set, false, _) do
-    IO.puts("Set value at #{key} to #{set}")
+    IO.puts(JsonManager.set_value(key, set, false))
   end
 
   defp main(key, set, true, _) do
-    IO.puts("Set value at #{key} to #{set} forcefully")
+    IO.puts(JsonManager.set_value(key, set, true))
   end
 
   defp main(key, nil, true, _) do
-    IO.puts("Delete value at #{key}")
+    IO.puts(JsonManager.delete_value(key))
   end
 
   defp main(key, _, _, true) do
-    IO.puts("Search using key #{key}")
+    JsonManager.search(key) |> Enum.each(fn {x, y} -> IO.puts("#{x}:#{y}") end)
+  end
+
+  defp show_help do
+    IO.puts("Usage: remext [options] [key]")
+    IO.puts("Options:")
+    IO.puts("  -h, --help           Print help message")
+    IO.puts("  -v, --version        Print version information")
+    IO.puts("  -s, --set value      Set new value at key")
+
+    IO.puts(
+      "  -d, --delete         Delete value at key. Use with --set to override the given key"
+    )
+
+    IO.puts(
+      "  -q, --search         Show all key pairs which includes the given phrase in its key. If no phrase is given all keys will be listed"
+    )
   end
 end
 
