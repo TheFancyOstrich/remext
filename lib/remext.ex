@@ -1,5 +1,6 @@
 defmodule Remext do
   @moduledoc "Main file"
+  @version Application.compile_env(:remext, :version, "dev")
   @options [
     help: :boolean,
     set: :string,
@@ -81,10 +82,10 @@ defmodule Remext do
   end
 
   defp show_help do
+    IO.puts("Remext #{@version}")
     IO.puts("Usage: remext [options] [key]")
     IO.puts("Options:")
     IO.puts("  -h, --help           Print help message")
-    IO.puts("  -v, --version        Print version information")
     IO.puts("  -s, --set value      Set new value at key")
 
     IO.puts(

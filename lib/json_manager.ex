@@ -1,6 +1,6 @@
 defmodule JsonManager do
   @moduledoc "Json manager. Read and write json data"
-  @filepath "./test.json"
+  @filepath Application.compile_env(:remext, :filepath, "./test.json")
 
   def get_value(key) do
     json_data = read_file()
