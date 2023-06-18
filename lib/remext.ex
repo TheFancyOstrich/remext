@@ -86,7 +86,7 @@ defmodule Remext do
 
   defp show_help do
     IO.puts("Remext #{@version}")
-    IO.puts("Usage: remext [options] [key]")
+    IO.puts("Usage: remext [key] [options]")
     IO.puts("Options:")
     IO.puts("  -h, --help           Print help message")
     IO.puts("  -s, --set value      Set new value at key")
