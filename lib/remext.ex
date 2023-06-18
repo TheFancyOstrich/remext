@@ -1,6 +1,7 @@
 defmodule Remext do
+  use Bakeware.Script
   @moduledoc "Main file"
-  @version Application.compile_env(:remext, :version, "dev")
+  @version Application.compile_env(:remext, :version, "dev-version")
   @options [
     help: :boolean,
     set: :string,
@@ -14,9 +15,11 @@ defmodule Remext do
     q: :search
   ]
 
-  def start(args) do
+  @impl Bakeware.Script
+  def main(args) do
     {opts, args, invalid} = OptionParser.parse(args, strict: @options, aliases: @aliases)
     execute_path(opts[:help], opts, args, invalid)
+    0
   end
 
   # Print help regardless of other input if --help is included
@@ -41,7 +44,7 @@ defmodule Remext do
     set = opts[:set]
     delete = opts[:delete] || false
     search = opts[:search] || false
-    main(key, set, delete, search)
+    execute(key, set, delete, search)
   end
 
   # If no argument but possibly opts
@@ -61,23 +64,23 @@ defmodule Remext do
     show_help()
   end
 
-  defp main(key, nil, false, false) do
+  defp execute(key, nil, false, false) do
     IO.puts(JsonManager.get_value(key))
   end
 
-  defp main(key, set, false, _) do
+  defp execute(key, set, false, _) do
     IO.puts(JsonManager.set_value(key, set, false))
   end
 
-  defp main(key, set, true, _) do
+  defp execute(key, set, true, _) do
     IO.puts(JsonManager.set_value(key, set, true))
   end
 
-  defp main(key, nil, true, _) do
+  defp execute(key, nil, true, _) do
     IO.puts(JsonManager.delete_value(key))
   end
 
-  defp main(key, _, _, true) do
+  defp execute(key, _, _, true) do
     JsonManager.search(key) |> Enum.each(fn {x, y} -> IO.puts("#{x}:#{y}") end)
   end
 
@@ -97,5 +100,3 @@ defmodule Remext do
     )
   end
 end
-
-Remext.start(System.argv())
