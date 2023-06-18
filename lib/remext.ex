@@ -68,16 +68,17 @@ defmodule Remext do
     IO.puts(JsonManager.get_value(key))
   end
 
+  defp execute(key, nil, true, _) do
+    IO.puts("Hi")
+    IO.puts(JsonManager.delete_value(key))
+  end
+
   defp execute(key, set, false, _) do
     IO.puts(JsonManager.set_value(key, set, false))
   end
 
   defp execute(key, set, true, _) do
     IO.puts(JsonManager.set_value(key, set, true))
-  end
-
-  defp execute(key, nil, true, _) do
-    IO.puts(JsonManager.delete_value(key))
   end
 
   defp execute(key, _, _, true) do
