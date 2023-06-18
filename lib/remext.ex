@@ -69,7 +69,6 @@ defmodule Remext do
   end
 
   defp execute(key, nil, true, _) do
-    IO.puts("Hi")
     IO.puts(JsonManager.delete_value(key))
   end
 
