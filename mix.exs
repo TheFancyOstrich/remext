@@ -29,7 +29,7 @@ defmodule Remext.MixProject do
         compression_level: 19
       ],
       steps: [:assemble, &Bakeware.assemble/1],
-      strip_beams: Mix.env() == :prod
+      strip_beams: Mix.env() == :release
     ]
   end
 
