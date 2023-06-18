@@ -25,6 +25,9 @@ defmodule Remext.MixProject do
     [
       overwrite: true,
       quiet: true,
+      bakeware: [
+        compression_level: 19
+      ],
       steps: [:assemble, &Bakeware.assemble/1],
       strip_beams: Mix.env() == :prod
     ]
