@@ -86,3 +86,27 @@ Move to path
 ```
 
 Example path `/usr/local/bin`
+
+### Troubleshooting
+
+The install method is still very untested. Here is listed some known issues and sometimes solutions:
+
+1. Problem:
+
+   ```
+   bakeware: Error creating directory /some/path/.cache/bakeware/.tmp/rUGLhC??: No such file or directory
+   bakeware: Unrecoverable validation error
+   ```
+
+   Solution:
+
+   Manually create the directory `/some/path/.cache/bakeware/.tmp/`
+
+2. Problem:
+   ```
+   /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.34' not found
+   ```
+   Solution:
+   1. Install libc6 version 2.34 or newer
+   2. If it isn't available you have to compile locally. Requires elixir and mix
+   3. Help me generalize the building process to multiple distributions
