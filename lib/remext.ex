@@ -72,16 +72,16 @@ defmodule Remext do
     IO.puts(JsonManager.delete_value(key))
   end
 
+  defp execute(key, nil, false, true) do
+    JsonManager.search(key) |> Enum.each(fn {x, y} -> IO.puts("#{x}:#{y}") end)
+  end
+
   defp execute(key, set, false, _) do
     IO.puts(JsonManager.set_value(key, set, false))
   end
 
   defp execute(key, set, true, _) do
     IO.puts(JsonManager.set_value(key, set, true))
-  end
-
-  defp execute(key, _, _, true) do
-    JsonManager.search(key) |> Enum.each(fn {x, y} -> IO.puts("#{x}:#{y}") end)
   end
 
   defp show_help do
