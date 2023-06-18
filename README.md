@@ -1,6 +1,15 @@
 # Remext
 
-A simple cli for manage and access a key map with information you want to remember, i.e. commands, links etc.
+A simple cli for managing a key map with information you want to remember, i.e. commands, links etc. Passwords are not recommended since the key value pairs are stored as plain text.
+
+Example usage:
+
+```
+> remext link-to-that-random-tool-I-found --set https://gitea.flightless.dev/erik/remext
+...
+> remext link-to-that-random-tool-I-found
+> https://gitea.flightless.dev/erik/remext
+```
 
 ## Usage
 
@@ -49,3 +58,31 @@ MIX_ENV=release mix release remext
 ```
 
 It will then be placed in `_build/release/rel/bakeware/remext`
+
+Create release tar:
+
+```
+tar -czvf remext-<verion>.tar.gz -C _build/release/rel/bakeware .
+```
+
+## Install
+
+Download the latest version:
+
+```
+curl https://gitea.flightless.dev/api/packages/erik/generic/remext/<version>/remext.tar.gz -o remext.tar.gz
+```
+
+Extract:
+
+```
+tar -xzvf remext.tar.gz
+```
+
+Move to path
+
+```
+(sudo) mv remext /suitable/path/to
+```
+
+Example path `/usr/local/bin`
