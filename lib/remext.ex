@@ -1,7 +1,7 @@
 defmodule Remext do
   use Bakeware.Script
   @moduledoc "Main file"
-  @version Application.compile_env(:remext, :version, "dev-version")
+  @version Mix.Project.config()[:version]
   @options [
     help: :boolean,
     set: :string,
