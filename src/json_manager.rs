@@ -92,5 +92,6 @@ fn get_file() -> String {
         };
         return dir + "/.config/remext.json";
     }
+    #[cfg(not(feature = "home_path"))]
     return "test.json".to_string();
 }
