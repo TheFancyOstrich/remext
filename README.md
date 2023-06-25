@@ -16,7 +16,7 @@ Example usage:
 The default usage is
 
 ```
-remext key
+> remext key
 ```
 
 to read a value you stored at `key`.
@@ -24,27 +24,43 @@ to read a value you stored at `key`.
 You set a new value at `key` with
 
 ```
-remext key --set/-s value
+> remext key --set/-s value
 ```
 
 or
 
 ```
-remext key --set/-s value --delete/-d
+> remext key --set/-s value --delete/-d
 ```
 
-to override anything already stored at `key`.
+to override anything already stored at `key`. Note that to include spaces in either the value or key it has to be wrapped in quotes, and if quotes are to be included in the value they have to be escaped using \", e.g.:
+
+```
+> remext key --set "Long value with spaces and \"quotes\""
+```
 
 You can also delete an entry with
 
 ```
-remext key --delete/-d
+> remext key --delete/-d
 ```
 
-and search through all keys with
+You can also search the keys using
 
 ```
-remext phrase --search/-q
+> remext phrase --search_keys/-q
+```
+
+or all values with
+
+```
+> remext phrase --search_values/-w
+```
+
+or both
+
+```
+> remext phrase -qw
 ```
 
 If phrase is empty a list of all keys will be given.
@@ -54,16 +70,11 @@ If phrase is empty a list of all keys will be given.
 To build the binary run
 
 ```
-MIX_ENV=release mix release remext
+cargo build --release --features home_path
 ```
 
-It will then be placed in `_build/release/rel/bakeware/remext`
-
-Create release tar:
-
-```
-tar -czvf remext-<verion>.tar.gz -C _build/release/rel/bakeware .
-```
+the feature sets the binary to use `~/.config/remext.json` instead of `./test.json`.
+It will then be placed in `target/release/remext`
 
 ## Install
 
@@ -86,27 +97,3 @@ Move to path
 ```
 
 Example path `/usr/local/bin`
-
-### Troubleshooting
-
-The install method is still very untested. Here is listed some known issues and sometimes solutions:
-
-1. Problem:
-
-   ```
-   bakeware: Error creating directory /some/path/.cache/bakeware/.tmp/rUGLhC??: No such file or directory
-   bakeware: Unrecoverable validation error
-   ```
-
-   Solution:
-
-   Manually create the directory `/some/path/.cache/bakeware/.tmp/`
-
-2. Problem:
-   ```
-   /lib/x86_64-linux-gnu/libc.so.6: version 'GLIBC_2.34' not found
-   ```
-   Solution:
-   1. Install libc6 version 2.34 or newer
-   2. If it isn't available you have to compile locally. Requires elixir and mix
-   3. Help me generalize the building process to multiple distributions
