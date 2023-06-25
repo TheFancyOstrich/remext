@@ -81,7 +81,7 @@ It will then be placed in `target/release/remext`
 Download the latest version:
 
 ```
-curl https://gitea.flightless.dev/api/packages/erik/generic/remext/<version>/remext.tar.gz -o remext.tar.gz
+curl https://gitea.flightless.dev/api/packages/flightless/generic/remext/<version>/remext.tar.gz -o remext.tar.gz
 ```
 
 Extract:
