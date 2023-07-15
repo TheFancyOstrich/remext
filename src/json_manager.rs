@@ -20,7 +20,7 @@ pub fn get(path: &str) -> String {
     return if data[path].is_null() {
         "".to_string()
     } else {
-        data[path].to_string()
+        clean_string(data[path].to_string())
     };
 }
 
@@ -36,7 +36,7 @@ pub fn search(term: &str, search_keys: bool, search_values: bool) -> Vec<String>
             if (search_keys && key.contains(term))
                 || (search_values && data[key].to_string().contains(term))
             {
-                list.push(format!("{}: {}", key, data[key].to_string()));
+                list.push(format!("{}: {}", key, clean_string(data[key].to_string())));
             }
         }
     }
@@ -49,9 +49,13 @@ pub fn delete(path: &str) -> String {
     if let Some(obj) = data.as_object_mut() {
         obj.remove(path);
         save_file(json!(data));
-        return value;
+        return clean_string(value);
     }
     "".to_string()
+}
+
+fn clean_string(value: String) -> String {
+    return value[1..value.len() - 1].replace("\\\"", "\"");
 }
 
 fn open_file() -> serde_json::Value {

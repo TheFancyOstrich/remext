@@ -1,29 +1,52 @@
 mod json_manager;
 use clap::{App, AppSettings, Arg};
+use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use json_manager::{add, delete, get, search};
 fn main() {
     let matches = app().get_matches();
     let search_keys = matches.is_present("search_keys");
     let search_values = matches.is_present("search_values");
     let del = matches.is_present("delete");
-
+    let clipboard = matches.is_present("clipboard");
     if let Some(key) = matches.value_of("key") {
         if let Some(value) = matches.value_of("set") {
-            println!("{}", add(key, value, del));
+            let fetched_value = add(key, value, del);
+            println!("{}", fetched_value);
+            if clipboard {
+                copy_to_clipboard(fetched_value)
+            }
         } else if del {
-            println!("{}", delete(key));
+            let fetched_value = delete(key);
+            println!("{}", fetched_value);
+            if clipboard {
+                copy_to_clipboard(fetched_value);
+            }
         } else if search_keys || search_values {
-            for v in search(key, search_keys, search_values) {
+            let fetched_values = search(key, search_keys, search_values);
+            for v in &fetched_values {
                 println!("{}", v);
             }
+            if clipboard && (&fetched_values).len() == 1 {
+                copy_to_clipboard(fetched_values.get(0).unwrap().to_owned());
+            }
         } else {
-            println!("{}", get(key))
+            let fetched_value = get(key);
+            println!("{}", fetched_value);
+            if clipboard {
+                copy_to_clipboard(fetched_value);
+            }
         }
     } else {
         for v in search("", search_keys, search_values) {
             println!("{}", v);
         }
     }
+}
+
+fn copy_to_clipboard(value: String) {
+    let mut ctx = ClipboardContext::new().unwrap();
+    ctx.set_contents(value).unwrap();
+    ctx.get_contents().unwrap();
 }
 
 fn app() -> App<'static, 'static> {
@@ -70,6 +93,12 @@ fn app() -> App<'static, 'static> {
                 .help("Search values")
                 .conflicts_with("set")
                 .conflicts_with("delete"),
+        )
+        .arg(
+            Arg::with_name("clipboard")
+                .short("c")
+                .long("clipboard")
+                .help("Copy to clipboard"),
         )
         .setting(AppSettings::ArgRequiredElseHelp)
 }
