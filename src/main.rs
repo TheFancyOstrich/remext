@@ -46,7 +46,7 @@ fn main() {
 fn copy_to_clipboard(value: String) {
     let mut ctx = ClipboardContext::new().unwrap();
     ctx.set_contents(value).unwrap();
-    ctx.get_contents().unwrap();
+    ctx.get_contents().unwrap(); // Is not saved unless this is called. Bug in upstream?
 }
 
 fn app() -> App<'static, 'static> {
@@ -89,7 +89,7 @@ fn app() -> App<'static, 'static> {
         .arg(
             Arg::with_name("search_values")
                 .short("w")
-                .long("both")
+                .long("searchw")
                 .help("Search values")
                 .conflicts_with("set")
                 .conflicts_with("delete"),
