@@ -23,11 +23,11 @@ fn main() {
             }
         } else if search_keys || search_values {
             let fetched_values = search(key, search_keys, search_values);
-            for v in &fetched_values {
-                println!("{}", v);
-            }
-            if clipboard && (&fetched_values).len() == 1 {
-                copy_to_clipboard(fetched_values.get(0).unwrap().to_owned());
+            for (k, v) in (&fetched_values).into_iter() {
+                println!("{}: {}", k, v);
+                if clipboard && fetched_values.len() == 1 {
+                    copy_to_clipboard(v.to_owned());
+                }
             }
         } else {
             let fetched_value = get(key);
@@ -37,8 +37,8 @@ fn main() {
             }
         }
     } else {
-        for v in search("", search_keys, search_values) {
-            println!("{}", v);
+        for (k, v) in search("", search_keys, search_values).into_iter() {
+            println!("{}: {}", k, v);
         }
     }
 }

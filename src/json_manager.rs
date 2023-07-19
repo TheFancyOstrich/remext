@@ -1,6 +1,7 @@
 #[cfg(feature = "home_path")]
 use home;
 use serde_json::{self, json};
+use std::collections::HashMap;
 use std::{
     fs::OpenOptions,
     io::{Read, Write},
@@ -24,23 +25,23 @@ pub fn get(path: &str) -> String {
     };
 }
 
-pub fn search(term: &str, search_keys: bool, search_values: bool) -> Vec<String> {
-    let data = open_file();
-    let mut list = [].to_vec();
+pub fn search(term: &str, search_keys: bool, search_values: bool) -> HashMap<String, String> {
+    let mut map = HashMap::new();
     if !search_keys && !search_values {
-        return list;
+        return map;
     }
+    let data = open_file();
 
     if let Some(obj) = data.as_object() {
         for key in obj.keys() {
             if (search_keys && key.contains(term))
                 || (search_values && data[key].to_string().contains(term))
             {
-                list.push(format!("{}: {}", key, clean_string(data[key].to_string())));
+                map.insert(key.to_owned(), clean_string(data[key].to_string()));
             }
         }
     }
-    return list;
+    return map;
 }
 
 pub fn delete(path: &str) -> String {
